@@ -1,3 +1,7 @@
+// Action Core
+import ActionCore from './js/action-core.js';
+new ActionCore.BackToTop();
+
 /**
  * Auto Copyright
  * © 2026 QWEL.DESIGN (https://qwel.design)
