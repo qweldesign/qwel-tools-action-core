@@ -1,12 +1,14 @@
 /**
- * Breadcrumb
+ * Component - Breadcrumb
  */
 
 .breadcrumb {
   list-style: none;
   display: flex;
   flex-flow: row wrap;
-  padding: 0;
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding: 0 clamp(0.75rem, 2%, 1.125rem);
 
   &__item {
     flex: 0 0 auto;

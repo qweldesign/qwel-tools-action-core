@@ -26,12 +26,17 @@
 @import "root";
 @import "normalize";
 
-// Projects
+// Layout
 @import "header";
-@import "breadcrumb";
-@import "main";
+@import "nav";
 @import "footer";
+
+// Components
 @import "icon";
+@import "breadcrumb";
+
+// Projects
+@import "section";
 
 // Utility
 //@import "utilities/flex";

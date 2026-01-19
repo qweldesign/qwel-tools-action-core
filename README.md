@@ -1,8 +1,6 @@
-# QWEL CREATIVE TEMPLATE
+# QWEL Action Core
 
-[QWEL.DESIGN](https://qwel.design/) の作品集 Creative Crafts のためのテンプレート
-
-[https://qwel.design/creative/](https://qwel.design/creative/)
+[QWEL.DESIGN](https://qwel.design/) のweb開発のための最小 UI/UX コンポーネント集
 
 ---
 

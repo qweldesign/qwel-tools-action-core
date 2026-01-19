@@ -1,13 +1,14 @@
 /**
- * Header
+ * Layout - Header
  */
 
 .header {
-  width: min(100%, 768px);
+  @include row(space-between, center);
+  width: min(100%, 900px);
   margin: 0 auto;
-  padding: 0 clamp(0.75rem, 2%, 1.5rem);
-}
+  padding: 0 clamp(0.75rem, 2%, 1.125rem);
 
-#logo {
-  width: 7.2rem;
+  &__siteBrand {
+    flex: 0 1 7.2rem;
+  }
 }

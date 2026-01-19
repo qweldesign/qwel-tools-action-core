@@ -1,0 +1,59 @@
+/**
+ * Project - Section
+ */
+
+.section {
+  &:nth-child(even) {
+    background-color: rgba(map-get($theme-colors, "secondary"), 0.075);
+  }
+
+  &__inner {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    padding: space("medium") clamp(0.75rem, 2%, 1.125rem);
+  }
+
+  &__heading {
+    &::after {
+      content: "✶";
+      color: theme-color("secondary");
+      font-size: 1.25em;
+      margin-inline-start: space("x-small");
+    }
+
+    & > span {
+      font-family: "Cormorant Garamond", serif;
+    }
+  }
+
+  &__subHeading {
+    &::before {
+      content: "✶";
+      margin-inline: space("x-small");
+      color: var(--color--primary--active);
+      font-size: 1.5em;
+      vertical-align: -0.125em;
+    }
+  }
+
+  &__list {
+    list-style-type: none;
+    margin: space("medium") 0;
+    padding: 0;
+  }
+
+  &__listItem {
+    color: theme-color("dark");
+    font-size: 0.875rem;
+    letter-spacing: var(--heading-letter-spacing);
+
+    &::before {
+      content: "―";
+      margin-inline-start: space("small");
+      margin-inline-end: space("x-small");
+      padding-inline-end: 0.5em;
+      color: theme-color("secondary");
+      font-weight: 700;
+    }
+  }
+}
