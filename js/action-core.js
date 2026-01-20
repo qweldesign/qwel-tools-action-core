@@ -7,12 +7,18 @@
 
 /**
  * Scroll To Anchor
+ * header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する
+ * 
+ * 使い方:
+ * header要素に [data-site-header] 属性を付与する
+ * 
+ * オプション:
+ * cssVar: header高さを格納するCSS変数名
+ * offset: header高さのフォールバック値
  */
 class ScrollToAnchor {
   constructor(options = {}) {
-    // options
-    // cssVar: header高さを格納するCSS変数名
-    // offset: header高さのフォールバック値
+    // オプション
     this.cssVar = options.cssVar || '--scroll-offset';
     this.fallbackOffset = options.offset ?? 0;
 
@@ -77,6 +83,16 @@ class ScrollToAnchor {
 
 /**
  * Scroll Spy
+ * スクロール位置 (セクション) に応じてナビゲーションの状態を更新する
+ * 
+ * 使い方:
+ * 監視対象セクションに [data-spy-section] 属性を付与し,
+ * ナビゲーション項目に [data-spy-nav] 属性を付与する
+ * 
+ * オプション:
+ * autoInit: 自動初期化 (規定でON)
+ * rootMargin: 交差判定のマージン
+ * currentClass: 閲覧中セクションを示すクラス名
  */
 class ScrollSpy {
   constructor(options = {}) {
@@ -98,9 +114,7 @@ class ScrollSpy {
     if (this.observer) this.destroy();
 
     const options = this.options;
-    // options
-    // rootMargin: 交差判定のマージン
-    // currentClass: 閲覧中セクションを示すクラス名
+    // オプション
     const rootMargin = options.rootMargin || `-40% 0px -60% 0px`; // ビューポート中央付近で交差判定
     this.currentClass = options.currentClass || 'is-current';
 
@@ -143,6 +157,17 @@ class ScrollSpy {
 
 /**
  * Readable On Scroll
+ * 画面内を出入りする要素のクラスを切り替える
+ * 
+ * 使い方:
+ * アニメーションさせたい要素に [data-readable] 属性を付与する
+ * 
+ * オプション:
+ * autoInit: 自動初期化 (規定でON)
+ * threshold: 交差判定の閾値
+ * rootMargin: 交差判定のマージン
+ * inviewClass: 画面内に入った時に付与するクラス名
+ * toggle: 画面外に出た時にクラスを外すかどうか (規定でOFF)
  */
 class ReadableOnScroll {
   constructor(options = {}) {
@@ -164,15 +189,11 @@ class ReadableOnScroll {
     if (this.observer) this.destroy();
 
     const options = this.options;
-    // options
-    // threshold: 交差判定の閾値
-    // rootMargin: 交差判定のマージン
-    // inviewClass: 画面内に入った時に付与するクラス名
-    // toggle: 画面外に出た時にクラスを外すかどうか
+    // オプション
     const threshold = options.threshold ?? 0.15;
     const rootMargin = options.rootMargin || '0px 0px -12% 0px';
     this.inviewClass = options.inviewClass || 'is-inview';
-    this.toggle = options.toggle ?? false; // 既定は一度きり
+    this.toggle = options.toggle ?? false;
 
     // 要素取得
     this.readableElems = Array.from(document.querySelectorAll('[data-readable]'));;
@@ -192,11 +213,14 @@ class ReadableOnScroll {
       const elem = entry.target;
 
       if (entry.isIntersecting) {
+        // 画面内に入った時
         elem.classList.add(this.inviewClass);
         if (!this.toggle) {
+          // 既定では監視解除
           this.observer.unobserve(elem);
         }
       } else if (this.toggle) {
+        // 画面外に出た時
         elem.classList.remove(this.inviewClass);
       }
     }
@@ -208,12 +232,19 @@ class ReadableOnScroll {
 }
 
 /**
- * Shrink Header
+ * Shrink Header:
+ * header要素の縮小をスクロールで制御する
+ * 
+ * 使い方:
+ * header要素に [data-site-header] 属性を付与し,
+ * body直下に [data-scroll-sentinel] 属性を持つ要素を配置する
+ * 
+ * オプション:
+ * shrinkClass: スクロール後に付与するクラス名
  */
 class ShrinkHeader {
   constructor(options = {}) {
-    // options
-    // shrinkClass: スクロール後に付与するクラス名
+    // オプション
     this.shrinkClass = options.shrinkClass ?? 'is-shrunk';
 
     // 要素取得
@@ -231,6 +262,7 @@ class ShrinkHeader {
   onIntersect(entries) {
     const entry = entries[0];
     const shouldShrink = !entry.isIntersecting;
+    // headerクラス切り替え
     this.header.classList.toggle(this.shrinkClass, shouldShrink);
   }
 
@@ -239,15 +271,19 @@ class ShrinkHeader {
   }
 }
 
-
 /**
- * Back To Top
+ * Back To Top:
+ * トップへ戻るボタンの生成と制御
+ * 
+ * 使い方:
+ * インスタンス化するだけで自動的にボタンが生成・制御される
+ * 
+ * オプション:
+ * offsetRatio: ボタンが出現する位置 (window.innerHeightの何倍か)
  */
 class BackToTop {
-  // options
-  // offsetRatio: ボタンが出現する位置 (window.innerHeightの何倍か) を設定可能
   constructor(options = {}) {
-    // options
+    // オプション
     this.offsetRatio = options.offsetRatio || 0;
 
     // 状態管理
