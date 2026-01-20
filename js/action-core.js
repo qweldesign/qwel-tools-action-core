@@ -124,6 +124,54 @@ class ScrollSpy {
 }
 
 /**
+ * Readable On Scroll
+ */
+class ReadableOnScroll {
+  constructor(options = {}) {
+    // options
+    // threshold: 交差判定の閾値
+    // rootMargin: 交差判定のマージン
+    // inviewClass: 画面内に入った時に付与するクラス名
+    // toggle: 画面外に出た時にクラスを外すかどうか
+    const threshold = options.threshold ?? 0.15;
+    const rootMargin = options.rootMargin || '0px 0px -12% 0px';
+    this.inviewClass = options.inviewClass || 'is-inview';
+    this.toggle = options.toggle ?? false; // 既定は一度きり
+
+    // 要素取得
+    this.readableElems = Array.from(document.querySelectorAll('[data-readable]'));;
+    if (!this.readableElems.length) return;
+
+    // IntersectionObserver 初期化
+    this.observer = new IntersectionObserver(this.onIntersect.bind(this), {
+      threshold, rootMargin
+    });
+
+    // 要素監視開始
+    this.readableElems.forEach(elem => this.observer.observe(elem));
+  }
+
+  onIntersect(entries) {
+    for (const entry of entries) {
+      const elem = entry.target;
+
+      if (entry.isIntersecting) {
+        elem.classList.add(this.inviewClass);
+        if (!this.toggle) {
+          this.observer.unobserve(elem);
+        }
+      } else if (this.toggle) {
+        elem.classList.remove(this.inviewClass);
+      }
+    }
+  }
+
+  destroy() {
+    this.observer?.disconnect();
+  }
+}
+
+/**
  * Shrink Header
  */
 class ShrinkHeader {
@@ -245,6 +293,7 @@ class BackToTop {
 const ActionCore = {
   ScrollToAnchor,
   ScrollSpy,
+  ReadableOnScroll,
   ShrinkHeader,
   BackToTop
 };

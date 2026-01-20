@@ -2,6 +2,7 @@
 import ActionCore from './js/action-core.js';
 new ActionCore.ScrollToAnchor();
 new ActionCore.ScrollSpy();
+new ActionCore.ReadableOnScroll();
 new ActionCore.ShrinkHeader();
 new ActionCore.BackToTop();
 
