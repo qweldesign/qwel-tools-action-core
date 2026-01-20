@@ -192,7 +192,14 @@ button, input, select, textarea {
   position: sticky;
   top: 0;
   left: 0;
+  height: 7.5rem;
   background-color: var(--color--lightest);
+  font-size: var(--font-size--medium);
+  transition: all 0.5s ease;
+}
+.header.is-shrunk {
+  height: 5rem;
+  font-size: var(--font-size--normal);
 }
 .header__inner {
   display: flex;
@@ -200,11 +207,16 @@ button, input, select, textarea {
   justify-content: space-between;
   align-items: center;
   width: min(100%, 900px);
+  height: 100%;
   margin: 0 auto;
   padding: 0 clamp(0.75rem, 2%, 1.125rem);
 }
 .header__siteBrand {
   flex: 0 1 7.2rem;
+  margin: 0;
+}
+.is-shrunk .header__siteBrand {
+  flex-basis: 6rem;
 }
 
 /**
@@ -221,6 +233,7 @@ button, input, select, textarea {
     align-items: center;
     gap: 2.25rem;
     flex: 0 1 auto;
+    height: 100%;
   }
 }
 .nav__primaryMenu, .nav__socialMenu {
@@ -232,10 +245,14 @@ button, input, select, textarea {
   align-items: center;
   gap: 2.25rem;
   flex: 0 1 auto;
+  height: 100%;
+  margin: 0;
 }
 .nav__menuItem {
-  font-size: var(--font-size--medium);
   text-transform: capitalize;
+}
+.nav__menuItem.is-current a {
+  font-weight: 700;
 }
 
 /**

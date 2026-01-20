@@ -32,7 +32,8 @@ class ScrollToAnchor {
   }
 
   handleEvents() {
-    window.addEventListener('resize', this.onResize);
+    window.addEventListener('resize', this.onResize, { passive: true });
+    window.addEventListener('scroll', this.onResize, { passive: true });
   }
   
   onResize() {
@@ -70,8 +71,90 @@ class ScrollToAnchor {
 
   destroy() {
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onResize);
   }
 }
+
+/**
+ * Scroll Spy
+ */
+class ScrollSpy {
+  constructor(options = {}) {
+    // options
+    // rootMargin: 交差判定のマージン
+    // currentClass: 閲覧中セクションを示すクラス名
+    const rootMargin = options.rootMargin || `-40% 0px -60% 0px`; // ビューポート中央付近で交差判定
+    this.currentClass = options.currentClass || 'is-current';
+
+    // 要素取得
+    this.sections = Array.from(document.querySelectorAll('[data-spy-section]'));
+    this.navItems = Array.from(document.querySelectorAll('[data-spy-nav]'));
+    if (!this.sections.length || !this.navItems.length) return;
+
+    // IntersectionObserver 初期化
+    this.observer = new IntersectionObserver(this.onIntersect.bind(this), {
+      threshold: 0, rootMargin
+    });
+
+    // セクション監視開始
+    this.sections.forEach(section => this.observer.observe(section));
+  }
+
+  onIntersect(entries) {
+    // 交差しているセクションを抽出
+    const intersectingEntries = entries.filter(entry => entry.isIntersecting);
+    if (!intersectingEntries.length) return;
+
+    // 最初に交差したセクションを現在地に設定
+    this.setCurrent(intersectingEntries[0].target.id);
+  }
+
+  setCurrent(sectionId) {
+    this.navItems.forEach(item => {
+      // ナビゲーション項目にはハッシュ付きアンカーを含める必要あり
+      const anchor = item.querySelector('a');
+      const targetId = anchor?.getAttribute('href')?.replace('#', '');
+      item.classList.toggle(this.currentClass, targetId === sectionId);
+    });
+  }
+
+  destroy() {
+    this.observer?.disconnect();
+  }
+}
+
+/**
+ * Shrink Header
+ */
+class ShrinkHeader {
+  constructor(options = {}) {
+    // options
+    // shrinkClass: スクロール後に付与するクラス名
+    this.shrinkClass = options.shrinkClass ?? 'is-shrunk';
+
+    // 要素取得
+    this.header = document.querySelector('[data-site-header]');
+    this.target = document.querySelector('[data-scroll-sentinel]');
+    if (!this.header || !this.target) return;
+
+    // IntersectionObserver 初期化
+    this.observer = new IntersectionObserver(this.onIntersect.bind(this), { threshold: 0 });
+
+    // 監視開始
+    this.observer.observe(this.target);
+  }
+
+  onIntersect(entries) {
+    const entry = entries[0];
+    const shouldShrink = !entry.isIntersecting;
+    this.header.classList.toggle(this.shrinkClass, shouldShrink);
+  }
+
+  destroy() {
+    this.observer?.disconnect();
+  }
+}
+
 
 /**
  * Back To Top
@@ -127,7 +210,7 @@ class BackToTop {
     this.btn.addEventListener('click', this.onClick);
 
     // ボタン表示制御
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll', this.onScroll, { passive: true });
   }
 
   onClick(event) {
@@ -161,6 +244,8 @@ class BackToTop {
 // Export modules
 const ActionCore = {
   ScrollToAnchor,
+  ScrollSpy,
+  ShrinkHeader,
   BackToTop
 };
 

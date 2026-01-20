@@ -6,16 +6,30 @@
   position: sticky;
   top: 0;
   left: 0;
+  height: 7.5rem;
   background-color: theme-color("lightest");
+  font-size: font-size("medium");
+  transition: all 0.5s ease;
+
+  &.is-shrunk {
+    height: 5rem;
+    font-size: font-size("normal");
+  }
 
   &__inner {
     @include row(space-between, center);
     width: min(100%, 900px);
+    height: 100%;
     margin: 0 auto;
     padding: 0 clamp(0.75rem, 2%, 1.125rem);
   }
 
   &__siteBrand {
     flex: 0 1 7.2rem;
+    margin: 0;
+
+    .is-shrunk & {
+      flex-basis: 6rem;
+    }
   }
 }
