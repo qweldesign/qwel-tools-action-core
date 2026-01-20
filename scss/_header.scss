@@ -3,10 +3,17 @@
  */
 
 .header {
-  @include row(space-between, center);
-  width: min(100%, 900px);
-  margin: 0 auto;
-  padding: 0 clamp(0.75rem, 2%, 1.125rem);
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: theme-color("lightest");
+
+  &__inner {
+    @include row(space-between, center);
+    width: min(100%, 900px);
+    margin: 0 auto;
+    padding: 0 clamp(0.75rem, 2%, 1.125rem);
+  }
 
   &__siteBrand {
     flex: 0 1 7.2rem;

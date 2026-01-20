@@ -189,6 +189,12 @@ button, input, select, textarea {
  * Layout - Header
  */
 .header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: var(--color--lightest);
+}
+.header__inner {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -273,6 +279,17 @@ button, input, select, textarea {
   font-size: 0.875rem;
   line-height: 1.8;
   letter-spacing: 0.02em;
+}
+
+/**
+ * Component - Scroll To Anchor
+ */
+:root {
+  --scroll-offset: 0;
+}
+
+:target {
+  scroll-margin-block-start: var(--scroll-offset);
 }
 
 /**

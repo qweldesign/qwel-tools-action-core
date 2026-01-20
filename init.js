@@ -1,5 +1,6 @@
 // Action Core
 import ActionCore from './js/action-core.js';
+new ActionCore.ScrollToAnchor();
 new ActionCore.BackToTop();
 
 /**

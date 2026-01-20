@@ -6,6 +6,74 @@
  */
 
 /**
+ * Scroll To Anchor
+ */
+class ScrollToAnchor {
+  constructor(options = {}) {
+    // options
+    // cssVar: header高さを格納するCSS変数名
+    // offset: header高さのフォールバック値
+    this.cssVar = options.cssVar || '--scroll-offset';
+    this.fallbackOffset = options.offset ?? 0;
+
+    // bind
+    this.updateOffset = this.updateOffset.bind(this);
+    this.onResize = this.onResize.bind(this);
+
+    // resize throttle
+    this.resizeTicking = false;
+
+    // イベント登録
+    this.handleEvents();
+
+    // 初期表示
+    this.updateOffset();
+    this.correctInitialAnchor();
+  }
+
+  handleEvents() {
+    window.addEventListener('resize', this.onResize);
+  }
+  
+  onResize() {
+    if (this.resizeTicking) return;
+
+    // requestAnimationFrame でスロットル
+    this.resizeTicking = true;
+    requestAnimationFrame(() => {
+      this.updateOffset();
+      this.resizeTicking = false;
+    });
+  }
+
+  updateOffset() {
+    // header高さを取得してCSS変数にセット
+    const offset = this.getHeaderOffset();
+    document.documentElement.style.setProperty(this.cssVar, `${offset}px`);
+  }
+
+  getHeaderOffset() {
+    const header = document.querySelector('[data-site-header]');
+    return header ? header.offsetHeight : this.fallbackOffset;
+  }
+  
+  // CSS変数反映後にアンカー位置を再計算させるため,
+  // hash を一度リセットして再適用する
+  correctInitialAnchor() {
+    const { hash } = window.location;
+    if (!hash) return;
+
+    // history を汚さないため replaceState を使用
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+  }
+
+  destroy() {
+    window.removeEventListener('resize', this.onResize);
+  }
+}
+
+/**
  * Back To Top
  */
 class BackToTop {
@@ -92,6 +160,7 @@ class BackToTop {
 
 // Export modules
 const ActionCore = {
+  ScrollToAnchor,
   BackToTop
 };
 
