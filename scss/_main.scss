@@ -1,0 +1,22 @@
+/**
+ * Layout - Main
+ */
+
+.main {
+  &__title {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    padding: space("medium") clamp(0.75rem, 2%, 1.125rem);
+
+    &::after {
+      content: "✶";
+      color: theme-color("secondary");
+      font-size: 1.25em;
+      margin-inline-start: space("x-small");
+    }
+
+    & > span {
+      font-family: "Cormorant Garamond", serif;
+    }
+  }
+}

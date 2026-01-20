@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /**
- * Style.css
+ * style.css
  * © 2026 QWEL.DESIGN (https://qwel.design)
  * Released under the MIT License.
  * See LICENSE file for details.
@@ -192,6 +192,7 @@ button, input, select, textarea {
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 1000;
   height: 7.5rem;
   background-color: var(--color--lightest);
   font-size: var(--font-size--medium);
@@ -253,6 +254,24 @@ button, input, select, textarea {
 }
 .nav__menuItem.is-current a {
   font-weight: 700;
+}
+
+/**
+ * Layout - Main
+ */
+.main__title {
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding: var(--spacing--medium) clamp(0.75rem, 2%, 1.125rem);
+}
+.main__title::after {
+  content: "✶";
+  color: var(--color--secondary);
+  font-size: 1.25em;
+  margin-inline-start: var(--spacing--x-small);
+}
+.main__title > span {
+  font-family: "Cormorant Garamond", serif;
 }
 
 /**
@@ -671,8 +690,8 @@ button, input, select, textarea {
 /**
  * Project - Section
  */
-.section:nth-child(even) {
-  background-color: rgba(255, 192, 128, 0.075);
+.section:nth-child(odd) {
+  background-color: rgba(255, 192, 128, 0.1);
 }
 .section__inner {
   width: min(100%, 900px);
@@ -701,15 +720,50 @@ button, input, select, textarea {
   padding: 0;
 }
 .section__listItem {
+  position: relative;
+  padding-inline-start: var(--spacing--large);
+  padding-inline-end: var(--spacing--medium);
   color: var(--color--dark);
   font-size: 0.875rem;
+  text-align: justify;
   letter-spacing: var(--heading-letter-spacing);
 }
 .section__listItem::before {
   content: "―";
-  margin-inline-start: var(--spacing--small);
-  margin-inline-end: var(--spacing--x-small);
-  padding-inline-end: 0.5em;
+  position: absolute;
+  top: 0;
+  left: var(--spacing--small);
   color: var(--color--secondary);
   font-weight: 700;
+}
+.section__button {
+  display: block;
+  width: 10.5rem;
+  height: 3.5rem;
+  line-height: 3.5rem;
+  margin-inline: auto;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--spacing--x-small);
+  text-align: center;
+  text-decoration: none;
+  word-break: break-word;
+  outline: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  color: var(--color--lightest);
+  background: linear-gradient(-30deg, #209fdf, rgb(121.2, 197.4, 235.8), #209fdf, #209fdf);
+  background-position: 0% 0%;
+  background-size: 150% 100%;
+}
+.section__button:hover {
+  text-decoration: none;
+}
+.section__button:hover {
+  color: var(--color--lightest);
+  background-position: 100% 0%;
 }

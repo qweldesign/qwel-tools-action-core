@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[Title Here] | QWEL in Action</title>
+    <title>Action Core (Navigation Core) | QWEL in Action</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Noto+Sans:wght@100..900&family=Noto+Serif:wght@100..900&display=swap" rel="stylesheet">
@@ -17,35 +17,35 @@
         <nav class="nav">
           <ul class="nav__primaryMenu" data-primary-menu>
             <li class="nav__menuItem" data-spy-nav>
-              <a href="#section-1">section-1</a>
+              <a href="#section-1">overview</a>
             </li>
             <li class="nav__menuItem" data-spy-nav>
-              <a href="#section-2">section-2</a>
+              <a href="#section-2">features</a>
             </li>
             <li class="nav__menuItem" data-spy-nav>
-              <a href="#section-3">section-3</a>
+              <a href="#section-3">how to use</a>
             </li>
             <li class="nav__menuItem" data-spy-nav>
-              <a href="#section-4">section-4</a>
+              <a href="#section-4">design notes</a>
             </li>
           </ul>
           <ul class="nav__socialMenu" data-social-menu>
             <li class="nav__menuItem">
-              <a href="https://x.com/" target="_blank" rel="noopener">
+              <a href="https://x.com/qweldesign" target="_blank" rel="noopener">
                 <svg class="icon icon--si icon--x icon--md" width="36" height="36" aria-hidden="true">
                   <use href="./icons.svg#si-x"></use>
                 </svg>
               </a>
             </li>
             <li class="nav__menuItem">
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener">
+              <a href="https://www.facebook.com/qweldesign" target="_blank" rel="noopener">
                 <svg class="icon icon--si icon--facebook icon--md" width="36" height="36" aria-hidden="true">
                   <use href="./icons.svg#si-facebook"></use>
                 </svg>
               </a>
             </li>
             <li class="nav__menuItem">
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+              <a href="https://www.instagram.com/qweldesign" target="_blank" rel="noopener">
                 <svg class="icon icon--si icon--instagram icon--md" width="36" height="36" aria-hidden="true">
                   <use href="./icons.svg#si-instagram"></use>
                 </svg>
@@ -58,74 +58,55 @@
     <ul class="breadcrumb">
       <li class="breadcrumb__item"><a href="https://qwel.design/">QWEL in Action</a></li>
       <li class="breadcrumb__item"><a href="../">Creative Tools</a></li>
-      <li class="breadcrumb__item breadcrumb__item--current"><span>[Title Here]</span></li>
+      <li class="breadcrumb__item breadcrumb__item--current"><span>Action Core</span></li>
     </ul>
     <main class="main">
+      <h2 class="main__title">Action Core (Navigation Core) | Created by <span> ― QWEL.DESIGN</span></h2>
       <section id="section-1" class="section" data-spy-section>
         <div class="section__inner" data-readable>
-          <h2 class="section__heading">[Heading Here] | Created by <span> ― QWEL.DESIGN</span></h2>
-          <h3 class="section__subHeading">Description</h3>
+          <h3 class="section__subHeading">概要</h3>
           <ul class="section__list">
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-          </ul>
-          <h3 class="section__subHeading">Spec</h3>
-          <ul class="section__list">
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
+            <li class="section__listItem"><strong>QWEL Action Core (Navigation Core)</strong> は、Web開発のための最小 UI/UX コンポーネントを集めたライブラリです</li>
+            <li class="section__listItem">あらゆるWebサイト/ランディングページに必要な<strong>「読む, 迷わない, 戻れる」という行為を支える</strong>ための最小構成です</li>
+            <li class="section__listItem">外部に依存関係を持たない Vanilla JS のみで稼働する, 下記の機能が含まれます</li>
+            <li class="section__listItem">MITライセンスで提供しており, 商用/非商用問わず自由に利用可能です</li>
           </ul>
         </div>
       </section>
       <section id="section-2" class="section" data-spy-section>
         <div class="section__inner" data-readable>
-          <h2 class="section__heading">[Heading Here] | Created by <span> ― QWEL.DESIGN</span></h2>
-          <h3 class="section__subHeading">Description</h3>
+          <h3 class="section__subHeading">機能</h3>
           <ul class="section__list">
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-          </ul>
-          <h3 class="section__subHeading">Spec</h3>
-          <ul class="section__list">
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
+            <li class="section__listItem"><strong>ScrollToAnchor:</strong> header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する機能</li>
+            <li class="section__listItem"><strong>ScrollSpy:</strong> スクロール位置 (セクション) に応じてナビゲーションの状態を更新する機能</li>
+            <li class="section__listItem"><strong>ReadableOnScroll:</strong> 画面内を出入りする要素のクラスを切り替える機能</li>
+            <li class="section__listItem"><strong>ShrinkHeader:</strong> header要素の縮小をスクロールで制御する機能</li>
+            <li class="section__listItem"><strong>BackToTop:</strong> トップへ戻るボタンを自動生成し, 制御する機能</li>
+            <li class="section__listItem"><strong>DrawerMenu:</strong> ドロワーメニューを自動生成し, 制御する機能</li>
           </ul>
         </div>
       </section>
       <section id="section-3" class="section" data-spy-section>
         <div class="section__inner" data-readable>
-          <h2 class="section__heading">[Heading Here] | Created by <span> ― QWEL.DESIGN</span></h2>
-          <h3 class="section__subHeading">Description</h3>
+          <h3 class="section__subHeading">使い方</h3>
           <ul class="section__list">
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
+            <li class="section__listItem">下記ボタンから GitHub にアクセスし, 緑色のボタンからソースコードをダウンロードしてください</li>
+            <li class="section__listItem">ダウンロードした ZIP ファイルを解凍し, action-core.css と js/action-core.js を取り出し, 任意の場所に配置してください</li>
+            <li class="section__listItem">JSコード内で ActionCore を import して使用します  (サンプルでは init.js 内に記載がありますので参考にしてください)</li>
+            <li class="section__listItem">グローバル名前空間 ActionCore から, 各クラスのインスタンスを生成 (new 演算子を使用) すれば, 機能が有効になります</li>
+            <li class="section__listItem">詳細な使用方法 (データ属性の設定, オプション等) は, ソースコード内にコメントを記載してありますので参照してください</li>
           </ul>
-          <h3 class="section__subHeading">Spec</h3>
-          <ul class="section__list">
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
-          </ul>
+          <a class="section__button" href="https://github.com/qweldesign/qwel-tools-action-core" target="_blank" rel="noopener">GitHubで見る</a>
         </div>
       </section>
       <section id="section-4" class="section" data-spy-section>
         <div class="section__inner" data-readable>
-          <h2 class="section__heading">[Heading Here] | Created by <span> ― QWEL.DESIGN</span></h2>
-          <h3 class="section__subHeading">Description</h3>
+          <h3 class="section__subHeading">設計メモ</h3>
           <ul class="section__list">
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-            <li class="section__listItem">[Description Here]</li>
-          </ul>
-          <h3 class="section__subHeading">Spec</h3>
-          <ul class="section__list">
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
-            <li class="section__listItem">[Spec Here]</li>
+            <li class="section__listItem">Action Core (Navigation Core) が扱うUIは, 演出を目的とせず, ユーザーの行動と理解を支える最小限の介入を行います</li>
+            <li class="section__listItem">インスタンス化すれば自動で動きますが, DOM操作を前提とする SPA 等で使う場合には, 必要なら初期化や破棄を制御できます</li>
+            <li class="section__listItem">設計者自身の学習用途も兼ねて, ソースコード内のコメントはなるべく丁寧に記載しました</li>
+            <li class="section__listItem">本プロジェクトはフレームワークではなく, ただのライブラリであり, 設計者自身の判断を前提にした半完成の道具箱です</li>
           </ul>
         </div>
       </section>
