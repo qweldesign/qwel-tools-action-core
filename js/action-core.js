@@ -80,6 +80,24 @@ class ScrollToAnchor {
  */
 class ScrollSpy {
   constructor(options = {}) {
+    this.options = options;
+    this.autoInit = options.autoInit ?? true;
+
+    if (this.autoInit) {
+      if (document.readyState === 'loading') {
+        // DOMContentLoaded を待って初期化
+        document.addEventListener('DOMContentLoaded', () => this.init(), { once: true });
+      } else {
+        this.init();
+      }
+    }
+  }
+
+  init() {
+    // 既に初期化されている場合は破棄
+    if (this.observer) this.destroy();
+
+    const options = this.options;
     // options
     // rootMargin: 交差判定のマージン
     // currentClass: 閲覧中セクションを示すクラス名
@@ -128,6 +146,24 @@ class ScrollSpy {
  */
 class ReadableOnScroll {
   constructor(options = {}) {
+    this.options = options;
+    this.autoInit = options.autoInit ?? true;
+
+    if (this.autoInit) {
+      if (document.readyState === 'loading') {
+        // DOMContentLoaded を待って初期化
+        document.addEventListener('DOMContentLoaded', () => this.init(), { once: true });
+      } else {
+        this.init();
+      }
+    }
+  }
+
+  init() {
+    // 既に初期化されている場合は破棄
+    if (this.observer) this.destroy();
+
+    const options = this.options;
     // options
     // threshold: 交差判定の閾値
     // rootMargin: 交差判定のマージン
