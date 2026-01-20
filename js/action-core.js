@@ -355,9 +355,227 @@ class BackToTop {
   }
 
   destroy() {
-    this.btn.removeEventListener('click', this.onClick);
-    this.btn.remove();
+    this.isShown = false;
+    this.btn?.removeEventListener('click', this.onClick);
+    this.btn?.remove();
     window.removeEventListener('scroll', this.onScroll);
+  }
+}
+
+/**
+ * Drawer Menu
+ * ドロワーメニューの生成と制御
+ * 
+ * 使い方:
+ * インスタンス化するだけで自動的にボタンが生成・制御される
+ * 
+ * オプション:
+ * cloneSiteBrand: SiteBrand をクローンするかどうか (規定でON)
+ * clonePrimaryMenu: PrimaryMenu をクローンするかどうか (規定でON)
+ * cloneSocialMenu: SocialMenu をクローンするかどうか (規定でON)
+ */
+class DrawerMenu {
+  constructor(options = {}) {
+    // オプション
+    this.cloneSiteBrand = options.cloneSiteBrand ?? true;
+    this.clonePrimaryMenu = options.clonePrimaryMenu ?? true;
+    this.cloneSocialMenu = options.cloneSocialMenu ?? true;
+
+    // 状態管理
+    this.isShown = false;
+
+    // 各要素生成
+    this.createElements();
+
+    // メニューインポート
+    this.importMenu();
+
+    // イベント登録
+    this.handleEvents();
+
+    // 出現アニメーション
+    setTimeout(() => {
+      this.drawer.classList.remove('is-ready');
+    }, 1000);
+  }
+
+  createElements() {
+    // .drawer
+    this.drawer = document.createElement('button');
+    this.drawer.classList.add('drawer', 'is-ready');
+
+    // .drawer__navicon
+    this.navicon = document.createElement('div');
+    this.navicon.classList.add('drawer__navicon');
+    let icon = document.createElement('div');
+    icon.classList.add('icon', 'icon--menu', 'icon--lg');
+    icon.innerHTML = '<span class="icon__span"></span>';
+    this.navicon.appendChild(icon);
+    this.drawer.appendChild(this.navicon);
+
+    // .drawer__close
+    this.close = document.createElement('div');
+    this.close.classList.add('drawer__close');
+    icon = document.createElement('div');
+    icon.classList.add('icon', 'icon--close', 'icon--lg');
+    icon.innerHTML = '<span class="icon__span"></span>';
+    this.close.appendChild(icon);
+    this.drawer.appendChild(this.close);
+
+    // .drawerMenu
+    this.drawerMenu = document.createElement('div');
+    this.drawerMenu.classList.add('drawerMenu', 'is-hidden');
+
+    // .drawerMenu__inner
+    this.inner = document.createElement('div');
+    this.inner.classList.add('drawerMenu__inner', 'is-hidden');
+    this.drawerMenu.appendChild(this.inner);
+
+    // .drawerMenuOverlay
+    this.overlay = document.createElement('div');
+    this.overlay.classList.add('drawerMenuOverlay', 'is-collapsed');
+
+    // body要素に挿入
+    const body = document.body;
+    body.appendChild(this.drawer);
+    body.appendChild(this.drawerMenu);
+    body.appendChild(this.overlay);
+  }
+
+  importMenu() {
+    // クローンする対象
+    this.siteBrand = document.querySelector('[data-site-brand]');
+    this.primaryMenu = document.querySelector('[data-primary-menu]');
+    this.socialMenu = document.querySelector('[data-social-menu]');
+
+    // メニューアイテムをインポート
+    if (this.cloneSiteBrand && this.siteBrand) this.importSiteBrand();
+    if (this.clonePrimaryMenu && this.primaryMenu) this.importPrimaryMenu();
+    if (this.cloneSocialMenu && this.socialMenu) this.importSocialMenu();
+  }
+
+  importSiteBrand() {
+    // SiteBrand をインポート
+    const siteBrand = document.createElement('div');
+    siteBrand.classList.add('drawerMenu__item', 'siteBrand');
+    siteBrand.innerHTML = this.siteBrand.innerHTML;
+    this.inner.appendChild(siteBrand);
+  }
+
+  importPrimaryMenu() {
+    // PrimaryMenu をインポート
+    const primaryMenu = document.createElement('ul');
+    primaryMenu.classList.add('drawerMenu__primaryMenu');
+
+    // li要素を順次インポート
+    const menuItems = this.primaryMenu.querySelectorAll('li');
+    menuItems.forEach((menuItem) => {
+      const primaryMenuItem = document.createElement('li');
+      primaryMenuItem.classList.add('drawerMenu__item');
+      primaryMenuItem.innerHTML = menuItem.innerHTML;
+      primaryMenu.appendChild(primaryMenuItem);
+    });
+    this.inner.appendChild(primaryMenu);
+  }
+
+  importSocialMenu() {
+    // SocialMenu をインポート
+    const socialMenu = document.createElement('ul');
+    socialMenu.classList.add('drawerMenu__socialMenu');
+
+    // li要素を順次インポート
+    const menuItems = this.socialMenu.querySelectorAll('li');
+    menuItems.forEach((menuItem) => {
+      const socialMenuItem = document.createElement('li');
+      socialMenuItem.classList.add('drawerMenu__item', 'social');
+      socialMenuItem.innerHTML = menuItem.innerHTML;
+      socialMenu.appendChild(socialMenuItem);
+    });
+    this.inner.appendChild(socialMenu);
+  }
+
+  toggle() {
+    // 状態から判別して、表示/非表示を切り替え
+    if (this.isShown) this.hide();
+    else this.show();
+  }
+
+  show() {
+    // 表示
+    if (!this.isShown) {
+      this.transitionEnd(this.drawerMenu, () => {
+        this.drawerMenu.classList.remove('is-hidden');
+        this.drawer.classList.add('is-active');
+        this.inner.classList.remove('is-collapsed');
+        this.overlay.classList.remove('is-collapsed');
+      }).then(() => {
+        this.inner.classList.remove('is-hidden');
+      });
+    }
+    this.isShown = true;
+  }
+
+  hide() {
+    // 非表示
+    if (this.isShown) {
+      this.transitionEnd(this.drawerMenu, () => {
+        this.drawerMenu.classList.add('is-hidden');
+        this.drawer.classList.remove('is-active');
+        this.inner.classList.add('is-hidden');
+      }).then(() => {
+        this.inner.classList.add('is-collapsed');
+        this.overlay.classList.add('is-collapsed');
+      });
+    }
+    this.isShown = false;
+  }
+
+  handleEvents() {
+    // ドロワーのイベント登録
+    this.drawer.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.toggle();
+    });
+
+    // オーバーレイのイベント登録
+    this.overlay.addEventListener('click', () => {
+      this.hide();
+    });
+
+    // スクロール時のイベント登録
+    window.addEventListener('scroll', () => {
+      this.windowScrollHandler();
+    });
+  }
+
+  windowScrollHandler() {
+    // スクロール時にメニューを非表示
+    if (this.isShown) this.hide();
+  }
+
+  transitionEnd(elem, func) {
+    // CSS遷移の完了を監視
+    let callback;
+    const promise = new Promise((resolve, reject) => {
+      callback = () => resolve(elem);
+      elem.addEventListener('transitionend', callback);
+    });
+    func();
+    promise.then((elem) => {
+      elem.removeEventListener('transitionend', callback);
+    });
+    return promise;
+  }
+
+  destroy() {
+    this.isShown = false;
+    this.drawer?.removeEventListener('click', this.toggle);
+    this.drawer?.remove();
+    this.inner?.remove();
+    this.drawerMenu?.remove();
+    this.overlay?.removeEventListener('click', this.hide);
+    this.overlay?.remove();
+    window.removeEventListener('scroll', this.windowScrollHandler);
   }
 }
 
@@ -367,7 +585,8 @@ const ActionCore = {
   ScrollSpy,
   ReadableOnScroll,
   ShrinkHeader,
-  BackToTop
+  BackToTop,
+  DrawerMenu
 };
 
 export default ActionCore;

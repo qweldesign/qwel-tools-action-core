@@ -5,6 +5,7 @@ new ActionCore.ScrollSpy();
 new ActionCore.ReadableOnScroll();
 new ActionCore.ShrinkHeader();
 new ActionCore.BackToTop();
+new ActionCore.DrawerMenu();
 
 /**
  * Auto Copyright
