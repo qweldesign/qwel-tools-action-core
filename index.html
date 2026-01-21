@@ -103,10 +103,13 @@
         <div class="section__inner" data-readable>
           <h3 class="section__subHeading">設計メモ</h3>
           <ul class="section__list">
-            <li class="section__listItem">Action Core (Navigation Core) が扱うUIは, 演出を目的とせず, ユーザーの行動と理解を支える最小限の介入を行います</li>
-            <li class="section__listItem">インスタンス化すれば自動で動きますが, DOM操作を前提とする SPA 等で使う場合には, 必要なら初期化や破棄を制御できます</li>
-            <li class="section__listItem">設計者自身の学習用途も兼ねて, ソースコード内のコメントはなるべく丁寧に記載しました</li>
-            <li class="section__listItem">本プロジェクトはフレームワークではなく, ただのライブラリであり, 設計者自身の判断を前提にした半完成の道具箱です</li>
+            <li class="section__listItem"><strong>Action Core</strong> が扱うUIは, 視覚的な演出や印象操作を目的とせず, <strong>ユーザーの行動と理解を支える最小限の介入</strong>を行います</li>
+            <li class="section__listItem">命名は, 設計者のポートフォリオ "<strong><a href="https://qwel.design">QWEL in Action</a></strong>" に由来しています</li>
+            <li class="section__listItem">ユーザーの「読む, 迷わない, 戻れる」という行為を支えるという内容から, <strong>Navigation Core</strong> という副題を添えました</li>
+            <li class="section__listItem">既存の情報構造 (HTML) にdata属性を記述する以外には, <strong>構造に介入せず, 構造を再利用し, 振る舞いだけを提供</strong>します</li>
+            <li class="section__listItem"><strong>インスタンス化すれば自動で動きます</strong>が, DOM操作を前提とする SPA 等で使う場合には, <strong>必要なら初期化や破棄を制御できます</strong></li>
+            <li class="section__listItem">設計者自身の学習用途も兼ねて, <strong>ソースコード内のコメントはなるべく丁寧に記載しました</strong></li>
+            <li class="section__listItem">本プロジェクトはフレームワークではなく, ただのライブラリであり, <strong>設計者自身の判断を前提にした半完成の道具箱</strong>です</li>
           </ul>
         </div>
       </section>
