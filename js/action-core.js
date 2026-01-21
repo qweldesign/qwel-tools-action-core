@@ -6,6 +6,27 @@
  */
 
 /**
+ * Preset
+ * Action Core に内包される全機能をまとめて初期化するプリセットクラス
+ * 
+ * 使い方:
+ * 下記2行のコードを記述するだけで利用可能
+ * import ActionCore from './js/action-core.js';
+ * new ActionCore.Preset();
+ */
+class Preset {
+  constructor() {
+    this.scrollToAnchor = new ScrollToAnchor();
+    this.scrollSpy = new ScrollSpy();
+    this.readableOnScroll = new ReadableOnScroll();
+    this.shrinkHeader = new ShrinkHeader();
+    this.backToTop = new BackToTop();
+    this.drawerMenu = new DrawerMenu();
+    this.safeEmbed = new SafeEmbed();
+  }
+}
+
+/**
  * Scroll To Anchor
  * header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する
  * 
@@ -687,6 +708,7 @@ class SafeEmbed {
 
 // Export modules
 const ActionCore = {
+  Preset,
   ScrollToAnchor,
   ScrollSpy,
   ReadableOnScroll,

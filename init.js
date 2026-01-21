@@ -1,12 +1,6 @@
 // Action Core
 import ActionCore from './js/action-core.js';
-new ActionCore.ScrollToAnchor();
-new ActionCore.ScrollSpy();
-new ActionCore.ReadableOnScroll();
-new ActionCore.ShrinkHeader();
-new ActionCore.BackToTop();
-new ActionCore.DrawerMenu();
-new ActionCore.SafeEmbed();
+new ActionCore.Preset();
 
 /**
  * Auto Copyright
