@@ -373,6 +373,7 @@ class BackToTop {
  * cloneSiteBrand: SiteBrand をクローンするかどうか (規定でON)
  * clonePrimaryMenu: PrimaryMenu をクローンするかどうか (規定でON)
  * cloneSocialMenu: SocialMenu をクローンするかどうか (規定でON)
+ * cloneTemplate: 独自テンプレートを使用する場合 (規定でOFF)
  */
 class DrawerMenu {
   constructor(options = {}) {
@@ -380,6 +381,7 @@ class DrawerMenu {
     this.cloneSiteBrand = options.cloneSiteBrand ?? true;
     this.clonePrimaryMenu = options.clonePrimaryMenu ?? true;
     this.cloneSocialMenu = options.cloneSocialMenu ?? true;
+    this.cloneTemplate = options.cloneTemplate || false;
 
     // 状態管理
     this.isShown = false;
@@ -443,15 +445,24 @@ class DrawerMenu {
   }
 
   importMenu() {
-    // クローンする対象
-    this.siteBrand = document.querySelector('[data-site-brand]');
-    this.primaryMenu = document.querySelector('[data-primary-menu]');
-    this.socialMenu = document.querySelector('[data-social-menu]');
+    if (!this.cloneTemplate) {
+      // 既存の構造からクローンする場合
+      this.siteBrand = document.querySelector('[data-site-brand]');
+      this.primaryMenu = document.querySelector('[data-primary-menu]');
+      this.socialMenu = document.querySelector('[data-social-menu]');
 
-    // メニューアイテムをインポート
-    if (this.cloneSiteBrand && this.siteBrand) this.importSiteBrand();
-    if (this.clonePrimaryMenu && this.primaryMenu) this.importPrimaryMenu();
-    if (this.cloneSocialMenu && this.socialMenu) this.importSocialMenu();
+      // メニューアイテムをインポート
+      if (this.cloneSiteBrand && this.siteBrand) this.importSiteBrand();
+      if (this.clonePrimaryMenu && this.primaryMenu) this.importPrimaryMenu();
+      if (this.cloneSocialMenu && this.socialMenu) this.importSocialMenu();
+    } else {
+      // 独自にテンプレートを使用する場合
+      const template = document.getElementById('drawerMenu-template');
+      if (template) {
+        const clone = template.content.cloneNode(true);
+        this.inner.appendChild(clone);
+      }
+    }
   }
 
   importSiteBrand() {
