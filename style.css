@@ -783,6 +783,8 @@ button, input, select, textarea {
   margin-inline: auto;
   position: relative;
   overflow: hidden;
+}
+.section__button, .section__button:active {
   border: 0;
   border-radius: var(--spacing--x-small);
   text-align: center;
@@ -794,15 +796,17 @@ button, input, select, textarea {
           user-select: none;
   cursor: pointer;
   transition: all 0.5s ease;
+}
+.section__button:hover, .section__button:focus {
+  text-decoration: none;
+}
+.section__button, .section__button:active {
   color: var(--color--lightest);
   background: linear-gradient(-30deg, #209fdf, rgb(121.2, 197.4, 235.8), #209fdf, #209fdf);
   background-position: 0% 0%;
   background-size: 150% 100%;
 }
-.section__button:hover {
-  text-decoration: none;
-}
-.section__button:hover {
+.section__button:hover, .section__button:focus {
   color: var(--color--lightest);
   background-position: 100% 0%;
 }
