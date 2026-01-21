@@ -6,6 +6,7 @@ new ActionCore.ReadableOnScroll();
 new ActionCore.ShrinkHeader();
 new ActionCore.BackToTop();
 new ActionCore.DrawerMenu();
+new ActionCore.SafeEmbed();
 
 /**
  * Auto Copyright

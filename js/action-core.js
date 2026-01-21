@@ -92,9 +92,9 @@ class ScrollToAnchor {
  * ナビゲーション項目に [data-spy-nav] 属性を付与する
  * 
  * オプション:
+ * autoInit: 自動初期化 (規定でON)
  * spySectionSelector: 監視対象セクションセレクタ (規定で [data-spy-section])
  * spyNavSelector: ナビゲーション項目セレクタ (規定で [data-spy-nav])
- * autoInit: 自動初期化 (規定でON)
  * rootMargin: 交差判定のマージン
  * currentClass: 閲覧中セクションを示すクラス名
  */
@@ -169,8 +169,8 @@ class ScrollSpy {
  * アニメーションさせたい要素に [data-readable] 属性を付与する
  * 
  * オプション:
- * readableSelector: 監視対象セレクタ (規定で [data-readable])
  * autoInit: 自動初期化 (規定でON)
+ * readableSelector: 監視対象セレクタ (規定で [data-readable])
  * threshold: 交差判定の閾値
  * rootMargin: 交差判定のマージン
  * inviewClass: 画面内に入った時に付与するクラス名
@@ -204,8 +204,8 @@ class ReadableOnScroll {
     this.toggle = options.toggle ?? false;
 
     // 要素取得
-    this.readableElems = Array.from(document.querySelectorAll(readableSelector));
-    if (!this.readableElems.length) return;
+    this.targets = Array.from(document.querySelectorAll(readableSelector));
+    if (!this.targets.length) return;
 
     // IntersectionObserver 初期化
     this.observer = new IntersectionObserver(this.onIntersect.bind(this), {
@@ -213,7 +213,7 @@ class ReadableOnScroll {
     });
 
     // 要素監視開始
-    this.readableElems.forEach(elem => this.observer.observe(elem));
+    this.targets.forEach(target => this.observer.observe(target));
   }
 
   onIntersect(entries) {
@@ -516,7 +516,7 @@ class DrawerMenu {
   }
 
   toggle() {
-    // 状態から判別して、表示/非表示を切り替え
+    // 状態から判別して, 表示/非表示を切り替え
     if (this.isShown) this.hide();
     else this.show();
   }
@@ -574,20 +574,6 @@ class DrawerMenu {
     if (this.isShown) this.hide();
   }
 
-  transitionEnd(elem, func) {
-    // CSS遷移の完了を監視
-    let callback;
-    const promise = new Promise((resolve, reject) => {
-      callback = () => resolve(elem);
-      elem.addEventListener('transitionend', callback);
-    });
-    func();
-    promise.then((elem) => {
-      elem.removeEventListener('transitionend', callback);
-    });
-    return promise;
-  }
-
   destroy() {
     this.isShown = false;
     this.drawer?.removeEventListener('click', this.toggle);
@@ -598,6 +584,105 @@ class DrawerMenu {
     this.overlay?.remove();
     window.removeEventListener('scroll', this.windowScrollHandler);
   }
+
+  transitionEnd(elem, func) {
+    // CSS遷移の完了を監視
+    let callback;
+    const promise = new Promise((resolve) => {
+      callback = () => resolve(elem);
+      elem.addEventListener('transitionend', callback);
+    });
+    func();
+    promise.then((elem) => {
+      elem.removeEventListener('transitionend', callback);
+    });
+    return promise;
+  }
+}
+
+/**
+ * SafeEmbed
+ * 主にGoogleMap等の埋め込みをロックし, クリックでロック解除するカバーを生成する
+ * 
+ * 使い方:
+ * 監視対象要素に [data-safe-embed] 属性を付与する
+ * 
+ * オプション:
+ * autoInit: 自動初期化 (規定でON)
+ * embedSelector: 監視対象セレクタ (規定で [data-safe-embed])
+ * infoText: カバーに表示させる文字列
+ */
+class SafeEmbed {
+  constructor(options = {}) {
+    this.options = options;
+    this.autoInit = options.autoInit ?? true;
+
+    if (this.autoInit) this.init();
+  }
+
+  init() {
+    // 既に初期化されている場合は破棄
+    if (this.observer) this.destroy();
+
+    const options = this.options;
+    // オプション
+    const embedSelector = options.embedSelector || '[data-safe-embed]';
+    const infoText = options.infoText || 'クリックするとマップを拡大/縮小できるようになります。';
+
+    // 要素取得
+    this.targets = Array.from(document.querySelectorAll(embedSelector));
+    this.covers = [];
+    if (!this.targets.length) return;
+
+    this.targets.forEach((target) => {
+      // .safe-embed-cover
+      const cover = document.createElement('div');
+      cover.classList.add('safe-embed-cover', 'is-active');
+      target.appendChild(cover);
+
+      // infoテキスト
+      const info = document.createElement('p');
+      info.textContent = infoText;
+      cover.appendChild(info);
+
+      // イベント登録
+      const hundler = () => {
+        this.transitionEnd(cover, () => {
+          cover.classList.remove('is-active');
+        }).then(() => {
+          cover.removeEventListener('click', hundler);
+          cover.remove();
+        });
+      };
+      cover.addEventListener('click', hundler);
+
+      // 破棄用に保持
+      this.covers.push({ cover, hundler });
+    });
+  }
+
+  destroy() {
+    this.targets = [];
+    this.covers.forEach(({ cover, hundler }) => {
+      cover.removeEventListener('click', hundler);
+      cover.remove();
+    });
+    this.covers = [];
+  }
+
+  transitionEnd(elem, func) {
+    // CSS遷移の完了を監視
+    let callback;
+    const promise = new Promise((resolve) => {
+      callback = () => resolve(elem);
+      elem.addEventListener('transitionend', callback);
+    });
+    func();
+    promise.then((elem) => {
+      elem.removeEventListener('transitionend', callback);
+    });
+    return promise;
+  }
 }
 
 // Export modules
@@ -607,7 +692,8 @@ const ActionCore = {
   ReadableOnScroll,
   ShrinkHeader,
   BackToTop,
-  DrawerMenu
+  DrawerMenu,
+  SafeEmbed
 };
 
 export default ActionCore;
