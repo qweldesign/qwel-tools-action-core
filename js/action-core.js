@@ -13,12 +13,14 @@
  * header要素に [data-site-header] 属性を付与する
  * 
  * オプション:
+ * headerSelector: headerセレクタ (規定で [data-site-header])
  * cssVar: header高さを格納するCSS変数名
  * offset: header高さのフォールバック値
  */
 class ScrollToAnchor {
   constructor(options = {}) {
     // オプション
+    this.headerSelector = options.headerSelector || '[data-site-header]';
     this.cssVar = options.cssVar || '--scroll-offset';
     this.fallbackOffset = options.offset ?? 0;
 
@@ -60,7 +62,7 @@ class ScrollToAnchor {
   }
 
   getHeaderOffset() {
-    const header = document.querySelector('[data-site-header]');
+    const header = document.querySelector(this.headerSelector);
     return header ? header.offsetHeight : this.fallbackOffset;
   }
   
@@ -90,6 +92,8 @@ class ScrollToAnchor {
  * ナビゲーション項目に [data-spy-nav] 属性を付与する
  * 
  * オプション:
+ * spySectionSelector: 監視対象セクションセレクタ (規定で [data-spy-section])
+ * spyNavSelector: ナビゲーション項目セレクタ (規定で [data-spy-nav])
  * autoInit: 自動初期化 (規定でON)
  * rootMargin: 交差判定のマージン
  * currentClass: 閲覧中セクションを示すクラス名
@@ -115,12 +119,14 @@ class ScrollSpy {
 
     const options = this.options;
     // オプション
+    const spySectionSelector = options.spySectionSelector || '[data-spy-section]';
+    const spyNavSelector = options.spyNavSelector || '[data-spy-nav]';
     const rootMargin = options.rootMargin || `-40% 0px -60% 0px`; // ビューポート中央付近で交差判定
     this.currentClass = options.currentClass || 'is-current';
 
     // 要素取得
-    this.sections = Array.from(document.querySelectorAll('[data-spy-section]'));
-    this.navItems = Array.from(document.querySelectorAll('[data-spy-nav]'));
+    this.sections = Array.from(document.querySelectorAll(spySectionSelector));
+    this.navItems = Array.from(document.querySelectorAll(spyNavSelector));
     if (!this.sections.length || !this.navItems.length) return;
 
     // IntersectionObserver 初期化
@@ -163,6 +169,7 @@ class ScrollSpy {
  * アニメーションさせたい要素に [data-readable] 属性を付与する
  * 
  * オプション:
+ * readableSelector: 監視対象セレクタ (規定で [data-readable])
  * autoInit: 自動初期化 (規定でON)
  * threshold: 交差判定の閾値
  * rootMargin: 交差判定のマージン
@@ -190,13 +197,14 @@ class ReadableOnScroll {
 
     const options = this.options;
     // オプション
+    const readableSelector = options.readableSelector || '[data-readable]';
     const threshold = options.threshold ?? 0.15;
     const rootMargin = options.rootMargin || '0px 0px -12% 0px';
     this.inviewClass = options.inviewClass || 'is-inview';
     this.toggle = options.toggle ?? false;
 
     // 要素取得
-    this.readableElems = Array.from(document.querySelectorAll('[data-readable]'));;
+    this.readableElems = Array.from(document.querySelectorAll(readableSelector));
     if (!this.readableElems.length) return;
 
     // IntersectionObserver 初期化
@@ -240,16 +248,20 @@ class ReadableOnScroll {
  * body直下に [data-scroll-sentinel] 属性を持つ要素を配置する
  * 
  * オプション:
+ * headerSelector: headerセレクタ (規定で [data-site-header])
+ * targetSelector: 監視対象セレクタ (規定で [data-scroll-sentinel])
  * shrinkClass: スクロール後に付与するクラス名
  */
 class ShrinkHeader {
   constructor(options = {}) {
     // オプション
+    const headerSelector = options.headerSelector || '[data-site-header]';
+    const targetSelector = options.targetSelector || '[data-scroll-sentinel]';
     this.shrinkClass = options.shrinkClass ?? 'is-shrunk';
 
     // 要素取得
-    this.header = document.querySelector('[data-site-header]');
-    this.target = document.querySelector('[data-scroll-sentinel]');
+    this.header = document.querySelector(headerSelector);
+    this.target = document.querySelector(targetSelector);
     if (!this.header || !this.target) return;
 
     // IntersectionObserver 初期化
@@ -370,18 +382,18 @@ class BackToTop {
  * インスタンス化するだけで自動的にボタンが生成・制御される
  * 
  * オプション:
- * cloneSiteBrand: SiteBrand をクローンするかどうか (規定でON)
- * clonePrimaryMenu: PrimaryMenu をクローンするかどうか (規定でON)
- * cloneSocialMenu: SocialMenu をクローンするかどうか (規定でON)
- * cloneTemplate: 独自テンプレートを使用する場合 (規定でOFF)
+ * siteBrandSelector: クローンする SiteBrand セレクタ (規定で [data-site-brand])
+ * primaryMenuSelector: クローンする PrimaryMenu セレクタ (規定で [data-primary-menu])
+ * socialMenuSelector: クローンする SocialMenu セレクタ (規定で [data-social-menu])
+ * templateId: 独自にテンプレートを使用する場合のIDセレクタ (規定で false)
  */
 class DrawerMenu {
   constructor(options = {}) {
     // オプション
-    this.cloneSiteBrand = options.cloneSiteBrand ?? true;
-    this.clonePrimaryMenu = options.clonePrimaryMenu ?? true;
-    this.cloneSocialMenu = options.cloneSocialMenu ?? true;
-    this.cloneTemplate = options.cloneTemplate || false;
+    this.siteBrandSelector = options.siteBrandSelector ?? '[data-site-brand]';
+    this.primaryMenuSelector = options.primaryMenuSelector ?? '[data-primary-menu]';
+    this.socialMenuSelector = options.socialMenuSelector ?? '[data-social-menu]';
+    this.templateId = options.templateId || false;
 
     // 状態管理
     this.isShown = false;
@@ -445,19 +457,14 @@ class DrawerMenu {
   }
 
   importMenu() {
-    if (!this.cloneTemplate) {
+    if (!this.templateId) {
       // 既存の構造からクローンする場合
-      this.siteBrand = document.querySelector('[data-site-brand]');
-      this.primaryMenu = document.querySelector('[data-primary-menu]');
-      this.socialMenu = document.querySelector('[data-social-menu]');
-
-      // メニューアイテムをインポート
-      if (this.cloneSiteBrand && this.siteBrand) this.importSiteBrand();
-      if (this.clonePrimaryMenu && this.primaryMenu) this.importPrimaryMenu();
-      if (this.cloneSocialMenu && this.socialMenu) this.importSocialMenu();
+      if (this.siteBrandSelector) this.importSiteBrand();
+      if (this.primaryMenuSelector) this.importPrimaryMenu();
+      if (this.socialMenuSelector) this.importSocialMenu();
     } else {
       // 独自にテンプレートを使用する場合
-      const template = document.getElementById('drawerMenu-template');
+      const template = document.getElementById(this.templateId);
       if (template) {
         const clone = template.content.cloneNode(true);
         this.inner.appendChild(clone);
@@ -469,6 +476,7 @@ class DrawerMenu {
     // SiteBrand をインポート
     const siteBrand = document.createElement('div');
     siteBrand.classList.add('drawerMenu__item', 'siteBrand');
+    this.siteBrand = document.querySelector(this.siteBrandSelector);
     siteBrand.innerHTML = this.siteBrand.innerHTML;
     this.inner.appendChild(siteBrand);
   }
@@ -479,6 +487,7 @@ class DrawerMenu {
     primaryMenu.classList.add('drawerMenu__primaryMenu');
 
     // li要素を順次インポート
+    this.primaryMenu = document.querySelector(this.primaryMenuSelector);
     const menuItems = this.primaryMenu.querySelectorAll('li');
     menuItems.forEach((menuItem) => {
       const primaryMenuItem = document.createElement('li');
@@ -495,6 +504,7 @@ class DrawerMenu {
     socialMenu.classList.add('drawerMenu__socialMenu');
 
     // li要素を順次インポート
+    this.socialMenu = document.querySelector(this.socialMenuSelector);
     const menuItems = this.socialMenu.querySelectorAll('li');
     menuItems.forEach((menuItem) => {
       const socialMenuItem = document.createElement('li');
