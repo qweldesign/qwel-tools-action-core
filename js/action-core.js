@@ -16,10 +16,9 @@
  */
 class Preset {
   constructor() {
-    this.scrollToAnchor = new ScrollToAnchor();
+    this.activeHeader = new ActiveHeader();
     this.scrollSpy = new ScrollSpy();
     this.readableOnScroll = new ReadableOnScroll();
-    this.shrinkHeader = new ShrinkHeader();
     this.backToTop = new BackToTop();
     this.drawerMenu = new DrawerMenu();
     this.safeEmbed = new SafeEmbed();
@@ -31,17 +30,17 @@ class Preset {
  * header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する
  * 
  * 使い方:
- * header要素に [data-site-header] 属性を付与する
+ * header要素に [data-active-header] 属性を付与する
  * 
  * オプション:
- * headerSelector: headerセレクタ (規定で [data-site-header])
+ * headerSelector: headerセレクタ (規定で [data-active-header])
  * cssVar: header高さを格納するCSS変数名
  * offset: header高さのフォールバック値
  */
 class ScrollToAnchor {
   constructor(options = {}) {
     // オプション
-    this.headerSelector = options.headerSelector || '[data-site-header]';
+    this.headerSelector = options.headerSelector || '[data-active-header]';
     this.cssVar = options.cssVar || '--scroll-offset';
     this.fallbackOffset = options.offset ?? 0;
 
@@ -62,7 +61,6 @@ class ScrollToAnchor {
 
   handleEvents() {
     window.addEventListener('resize', this.onResize, { passive: true });
-    window.addEventListener('scroll', this.onResize, { passive: true });
   }
   
   onResize() {
@@ -100,7 +98,53 @@ class ScrollToAnchor {
 
   destroy() {
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('scroll', this.onResize);
+  }
+}
+
+/**
+ * Active Header:
+ * ScrollToAnchor クラスを継承し, header要素のクラス切り替えをスクロールで制御する
+ * 
+ * 使い方:
+ * header要素に [data-active-header] 属性を付与し,
+ * body直下に [data-scroll-sentinel] 属性を持つ要素を配置する
+ * 
+ * オプション:
+ * ScrollToAnchor クラスの引数
+ * targetSelector: 監視対象セレクタ (規定で [data-scroll-sentinel])
+ */
+class ActiveHeader extends ScrollToAnchor {
+  constructor(options = {}) {
+    super(options);
+
+    // オプション
+    const targetSelector = options.targetSelector || '[data-scroll-sentinel]';
+
+    // 要素取得
+    this.header = document.querySelector(this.headerSelector);
+    this.target = document.querySelector(targetSelector);
+    if (!this.header || !this.target) return;
+
+    // IntersectionObserver 初期化
+    this.observer = new IntersectionObserver(this.onIntersect.bind(this), { threshold: 0 });
+
+    // 監視開始
+    this.observer.observe(this.target);
+  }
+
+  onIntersect(entries) {
+    const entry = entries[0];
+    const shouldActive = entry.isIntersecting;
+    // headerクラス切り替え
+    transitionEnd(this.header, () => {
+      this.header.classList.toggle('is-active', shouldActive);
+    }).then(() => {
+      this.updateOffset();
+    });
+  }
+
+  destroy() {
+    this.observer?.disconnect();
   }
 }
 
@@ -117,7 +161,6 @@ class ScrollToAnchor {
  * spySectionSelector: 監視対象セクションセレクタ (規定で [data-spy-section])
  * spyNavSelector: ナビゲーション項目セレクタ (規定で [data-spy-nav])
  * rootMargin: 交差判定のマージン
- * currentClass: 閲覧中セクションを示すクラス名
  */
 class ScrollSpy {
   constructor(options = {}) {
@@ -143,7 +186,6 @@ class ScrollSpy {
     const spySectionSelector = options.spySectionSelector || '[data-spy-section]';
     const spyNavSelector = options.spyNavSelector || '[data-spy-nav]';
     const rootMargin = options.rootMargin || `-40% 0px -60% 0px`; // ビューポート中央付近で交差判定
-    this.currentClass = options.currentClass || 'is-current';
 
     // 要素取得
     this.sections = Array.from(document.querySelectorAll(spySectionSelector));
@@ -173,7 +215,7 @@ class ScrollSpy {
       // ナビゲーション項目にはハッシュ付きアンカーを含める必要あり
       const anchor = item.querySelector('a');
       const targetId = anchor?.getAttribute('href')?.replace('#', '');
-      item.classList.toggle(this.currentClass, targetId === sectionId);
+      item.classList.toggle('is-current', targetId === sectionId);
     });
   }
 
@@ -253,50 +295,6 @@ class ReadableOnScroll {
         elem.classList.remove(this.inviewClass);
       }
     }
-  }
-
-  destroy() {
-    this.observer?.disconnect();
-  }
-}
-
-/**
- * Shrink Header:
- * header要素の縮小をスクロールで制御する
- * 
- * 使い方:
- * header要素に [data-site-header] 属性を付与し,
- * body直下に [data-scroll-sentinel] 属性を持つ要素を配置する
- * 
- * オプション:
- * headerSelector: headerセレクタ (規定で [data-site-header])
- * targetSelector: 監視対象セレクタ (規定で [data-scroll-sentinel])
- * shrinkClass: スクロール後に付与するクラス名
- */
-class ShrinkHeader {
-  constructor(options = {}) {
-    // オプション
-    const headerSelector = options.headerSelector || '[data-site-header]';
-    const targetSelector = options.targetSelector || '[data-scroll-sentinel]';
-    this.shrinkClass = options.shrinkClass ?? 'is-shrunk';
-
-    // 要素取得
-    this.header = document.querySelector(headerSelector);
-    this.target = document.querySelector(targetSelector);
-    if (!this.header || !this.target) return;
-
-    // IntersectionObserver 初期化
-    this.observer = new IntersectionObserver(this.onIntersect.bind(this), { threshold: 0 });
-
-    // 監視開始
-    this.observer.observe(this.target);
-  }
-
-  onIntersect(entries) {
-    const entry = entries[0];
-    const shouldShrink = !entry.isIntersecting;
-    // headerクラス切り替え
-    this.header.classList.toggle(this.shrinkClass, shouldShrink);
   }
 
   destroy() {
@@ -545,7 +543,7 @@ class DrawerMenu {
   show() {
     // 表示
     if (!this.isShown) {
-      this.transitionEnd(this.drawerMenu, () => {
+      transitionEnd(this.drawerMenu, () => {
         this.drawerMenu.classList.remove('is-hidden');
         this.drawer.classList.add('is-active');
         this.inner.classList.remove('is-collapsed');
@@ -560,7 +558,7 @@ class DrawerMenu {
   hide() {
     // 非表示
     if (this.isShown) {
-      this.transitionEnd(this.drawerMenu, () => {
+      transitionEnd(this.drawerMenu, () => {
         this.drawerMenu.classList.add('is-hidden');
         this.drawer.classList.remove('is-active');
         this.inner.classList.add('is-hidden');
@@ -604,20 +602,6 @@ class DrawerMenu {
     this.overlay?.removeEventListener('click', this.hide);
     this.overlay?.remove();
     window.removeEventListener('scroll', this.windowScrollHandler);
-  }
-
-  transitionEnd(elem, func) {
-    // CSS遷移の完了を監視
-    let callback;
-    const promise = new Promise((resolve) => {
-      callback = () => resolve(elem);
-      elem.addEventListener('transitionend', callback);
-    });
-    func();
-    promise.then((elem) => {
-      elem.removeEventListener('transitionend', callback);
-    });
-    return promise;
   }
 }
 
@@ -668,7 +652,7 @@ class SafeEmbed {
 
       // イベント登録
       const hundler = () => {
-        this.transitionEnd(cover, () => {
+        transitionEnd(cover, () => {
           cover.classList.remove('is-active');
         }).then(() => {
           cover.removeEventListener('click', hundler);
@@ -690,29 +674,30 @@ class SafeEmbed {
     });
     this.covers = [];
   }
+}
 
-  transitionEnd(elem, func) {
-    // CSS遷移の完了を監視
-    let callback;
-    const promise = new Promise((resolve) => {
-      callback = () => resolve(elem);
-      elem.addEventListener('transitionend', callback);
-    });
-    func();
-    promise.then((elem) => {
-      elem.removeEventListener('transitionend', callback);
-    });
-    return promise;
-  }
+// Utility functions
+function transitionEnd(elem, func) {
+  // CSS遷移の完了を監視
+  let callback;
+  const promise = new Promise((resolve) => {
+    callback = () => resolve(elem);
+    elem.addEventListener('transitionend', callback);
+  });
+  func();
+  promise.then((elem) => {
+    elem.removeEventListener('transitionend', callback);
+  });
+  return promise;
 }
 
 // Export modules
 const ActionCore = {
   Preset,
   ScrollToAnchor,
+  ActiveHeader,
   ScrollSpy,
   ReadableOnScroll,
-  ShrinkHeader,
   BackToTop,
   DrawerMenu,
   SafeEmbed

@@ -198,7 +198,7 @@ button, input, select, textarea {
   font-size: var(--font-size--medium);
   transition: all 0.5s ease;
 }
-.header.is-shrunk {
+.header:not(.is-active) {
   height: 5rem;
   font-size: var(--font-size--normal);
 }
@@ -215,8 +215,9 @@ button, input, select, textarea {
 .header__siteBrand {
   flex: 0 1 7.2rem;
   margin: 0;
+  transition: all 0.5s ease;
 }
-.is-shrunk .header__siteBrand {
+.header:not(.is-active) .header__siteBrand {
   flex-basis: 6rem;
 }
 

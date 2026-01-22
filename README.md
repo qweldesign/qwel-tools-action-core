@@ -18,9 +18,9 @@
 ## 機能 | Features
 
 - **ScrollToAnchor**: header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する機能
+- **ActiveHeader**: header要素のクラス切り替えをスクロールで制御する機能
 - **ScrollSpy**: スクロール位置 (セクション) に応じてナビゲーションの状態を更新する機能
 - **ReadableOnScroll**: 画面内を出入りする要素のクラスを切り替える機能
-- **ShrinkHeader**: header要素の縮小をスクロールで制御する機能
 - **BackToTop**: トップへ戻るボタンを自動生成し, 制御する機能
 - **DrawerMenu**: ドロワーメニューを自動生成し, 制御する機能
 - **SafeEmbed**: 主にGoogleMap等の埋め込みをロックし, クリックでロック解除するカバーを生成する機能
