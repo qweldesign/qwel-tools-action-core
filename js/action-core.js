@@ -480,9 +480,12 @@ class DrawerMenu {
   importMenu() {
     if (!this.templateId) {
       // 既存の構造からクローンする場合
-      if (this.siteBrandSelector) this.importSiteBrand();
-      if (this.primaryMenuSelector) this.importPrimaryMenu();
-      if (this.socialMenuSelector) this.importSocialMenu();
+      this.siteBrand = document.querySelector(this.siteBrandSelector);
+      if (this.siteBrand) this.importSiteBrand();
+      this.primaryMenu = document.querySelector(this.primaryMenuSelector);
+      if (this.primaryMenu) this.importPrimaryMenu();
+      this.socialMenu = document.querySelector(this.socialMenuSelector);
+      if (this.socialMenu) this.importSocialMenu();
     } else {
       // 独自にテンプレートを使用する場合
       const template = document.getElementById(this.templateId);
@@ -497,7 +500,6 @@ class DrawerMenu {
     // SiteBrand をインポート
     const siteBrand = document.createElement('div');
     siteBrand.classList.add('drawerMenu__item', 'siteBrand');
-    this.siteBrand = document.querySelector(this.siteBrandSelector);
     siteBrand.innerHTML = this.siteBrand.innerHTML;
     this.inner.appendChild(siteBrand);
   }
@@ -508,7 +510,6 @@ class DrawerMenu {
     primaryMenu.classList.add('drawerMenu__primaryMenu');
 
     // li要素を順次インポート
-    this.primaryMenu = document.querySelector(this.primaryMenuSelector);
     const menuItems = this.primaryMenu.querySelectorAll('li');
     menuItems.forEach((menuItem) => {
       const primaryMenuItem = document.createElement('li');
@@ -525,7 +526,6 @@ class DrawerMenu {
     socialMenu.classList.add('drawerMenu__socialMenu');
 
     // li要素を順次インポート
-    this.socialMenu = document.querySelector(this.socialMenuSelector);
     const menuItems = this.socialMenu.querySelectorAll('li');
     menuItems.forEach((menuItem) => {
       const socialMenuItem = document.createElement('li');
