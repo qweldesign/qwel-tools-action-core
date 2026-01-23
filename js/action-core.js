@@ -10,6 +10,7 @@
  * Action Core に内包される全機能をまとめて初期化するプリセットクラス
  * 
  * 使い方:
+ * action-core.scss をバンドルした css を読み込み,
  * 下記2行のコードを記述するだけで利用可能
  * import ActionCore from './js/action-core.js';
  * new ActionCore.Preset();
@@ -30,6 +31,7 @@ class Preset {
  * header高さをCSS変数にセットし, アンカーリンクのスクロール位置を補正する
  * 
  * 使い方:
+ * _scroll-offset.scss をバンドルした css を読み込み,
  * header要素に [data-active-header] 属性を付与する
  * 
  * オプション:
@@ -229,6 +231,7 @@ class ScrollSpy {
  * 画面内を出入りする要素のクラスを切り替える
  * 
  * 使い方:
+ * _scroll-inview.scss をバンドルした css を読み込み,
  * アニメーションさせたい要素に [data-readable] 属性を付与する
  * 
  * オプション:
@@ -307,6 +310,7 @@ class ReadableOnScroll {
  * トップへ戻るボタンの生成と制御
  * 
  * 使い方:
+ * _back-to-top.scss をバンドルした css を読み込み,
  * インスタンス化するだけで自動的にボタンが生成・制御される
  * 
  * オプション:
@@ -398,6 +402,7 @@ class BackToTop {
  * ドロワーメニューの生成と制御
  * 
  * 使い方:
+ * _drawer-menu.scss をバンドルした css を読み込み,
  * インスタンス化するだけで自動的にボタンが生成・制御される
  * 
  * オプション:
@@ -610,6 +615,7 @@ class DrawerMenu {
  * 主にGoogleMap等の埋め込みをロックし, クリックでロック解除するカバーを生成する
  * 
  * 使い方:
+ * _safe-embed.scss をバンドルした css を読み込み,
  * 監視対象要素に [data-safe-embed] 属性を付与する
  * 
  * オプション:

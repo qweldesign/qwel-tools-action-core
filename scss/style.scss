@@ -33,18 +33,19 @@
 @import "footer";
 
 // Components
-@import "scrollToAnchor";
 @import "icon";
-@import "backToTop";
+@import "embed";
 @import "breadcrumb";
+@import "backToTop";
 @import "drawerMenu";
-@import "readableOnScroll";
-@import "safeEmbed";
 
 // Projects
 @import "section";
 
 // Utility
+@import "utilities/scroll-offset";
+@import "utilities/scroll-inview";
+@import "utilities/safe-embed";
 //@import "utilities/flex";
 //@import "utilities/flexItem";
 //@import "utilities/spacing";

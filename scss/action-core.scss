@@ -7,15 +7,15 @@
  * See LICENSE file for details.
  */
 
- // Settings
+// Settings
 @import "settings/colorSystem";
 @import "settings/gridSystem";
 @import "settings/typography";
 
 // Components
-@import "scrollToAnchor";
+@import "utilities/scroll-offset";
+@import "utilities/scroll-inview";
+@import "utilities/safe-embed";
 @import "icon";
 @import "backToTop";
 @import "drawerMenu";
-@import "readableOnScroll";
-@import "safeEmbed";
