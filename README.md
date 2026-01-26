@@ -2,7 +2,7 @@
 
 [QWEL.DESIGN](https://qwel.design/) のweb開発のための最小 UI/UX コンポーネント集
 
-▶ Sample DEMO: [https://tools.qwel.design/action-core/]
+▶ Sample DEMO: [https://qwel.design/tools/action-core/]
 
 ---
 
