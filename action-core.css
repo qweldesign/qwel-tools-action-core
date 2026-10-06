@@ -153,6 +153,8 @@
   width: 3rem;
   height: 3rem;
   padding: 0;
+  border: 0;
+  background-color: transparent;
   opacity: 0;
   transform: translateY(1rem) rotateY(-180deg);
   transition: all 0.5s ease;
@@ -210,9 +212,6 @@
   top: 0;
   right: 0;
   z-index: 1111;
-  opacity: 0;
-  transform: rotateY(-180deg);
-  transition: all 0.5s ease;
 }
 .drawer__navicon > .icon {
   border-radius: 0;
@@ -228,6 +227,11 @@
 .drawer__navicon:hover > .icon > .icon__span, .drawer__navicon:hover > .icon > .icon__span::before, .drawer__navicon:hover > .icon > .icon__span::after {
   border-color: var(--color--darkest);
 }
+.drawer__navicon {
+  opacity: 0;
+  transform: rotateY(-180deg);
+  transition: all 0.5s ease;
+}
 .drawer:not(.is-active):not(.is-ready) .drawer__navicon {
   opacity: 1;
   transform: rotateY(0);
@@ -237,9 +241,6 @@
   top: 0;
   right: 0;
   z-index: 1110;
-  opacity: 1;
-  transform: rotateY(0);
-  transition: all 0.5s ease;
 }
 .drawer__close > .icon {
   border-radius: 0;
@@ -254,6 +255,11 @@
 }
 .drawer__close:hover > .icon > .icon__span, .drawer__close:hover > .icon > .icon__span::before, .drawer__close:hover > .icon > .icon__span::after {
   border-color: var(--color--darkest);
+}
+.drawer__close {
+  opacity: 1;
+  transform: rotateY(0);
+  transition: all 0.5s ease;
 }
 .drawer:not(.is-active) .drawer__close {
   opacity: 0;

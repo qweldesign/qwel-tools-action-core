@@ -282,7 +282,6 @@ button, input, select, textarea {
   padding: var(--spacing--x-large) 0;
   background-color: var(--color--primary);
   color: var(--color--lightest);
-  text-align: center;
 }
 .footer a, .footer a:active {
   color: var(--color--lightest);
@@ -291,6 +290,9 @@ button, input, select, textarea {
 .footer a:hover, .footer a:focus {
   color: var(--color--lightest);
   text-decoration: underline;
+}
+.footer {
+  text-align: center;
 }
 .footer__inner {
   display: flex;
@@ -462,6 +464,8 @@ button, input, select, textarea {
   width: 3rem;
   height: 3rem;
   padding: 0;
+  border: 0;
+  background-color: transparent;
   opacity: 0;
   transform: translateY(1rem) rotateY(-180deg);
   transition: all 0.5s ease;
@@ -519,9 +523,6 @@ button, input, select, textarea {
   top: 0;
   right: 0;
   z-index: 1111;
-  opacity: 0;
-  transform: rotateY(-180deg);
-  transition: all 0.5s ease;
 }
 .drawer__navicon > .icon {
   border-radius: 0;
@@ -537,6 +538,11 @@ button, input, select, textarea {
 .drawer__navicon:hover > .icon > .icon__span, .drawer__navicon:hover > .icon > .icon__span::before, .drawer__navicon:hover > .icon > .icon__span::after {
   border-color: var(--color--darkest);
 }
+.drawer__navicon {
+  opacity: 0;
+  transform: rotateY(-180deg);
+  transition: all 0.5s ease;
+}
 .drawer:not(.is-active):not(.is-ready) .drawer__navicon {
   opacity: 1;
   transform: rotateY(0);
@@ -546,9 +552,6 @@ button, input, select, textarea {
   top: 0;
   right: 0;
   z-index: 1110;
-  opacity: 1;
-  transform: rotateY(0);
-  transition: all 0.5s ease;
 }
 .drawer__close > .icon {
   border-radius: 0;
@@ -563,6 +566,11 @@ button, input, select, textarea {
 }
 .drawer__close:hover > .icon > .icon__span, .drawer__close:hover > .icon > .icon__span::before, .drawer__close:hover > .icon > .icon__span::after {
   border-color: var(--color--darkest);
+}
+.drawer__close {
+  opacity: 1;
+  transform: rotateY(0);
+  transition: all 0.5s ease;
 }
 .drawer:not(.is-active) .drawer__close {
   opacity: 0;
